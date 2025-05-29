@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment - Naginawala</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f9f9f9; margin: 0; }
+    .payment-container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.09); padding: 30px; }
+    h2 { color: #a75813; }
+    .section { margin-bottom: 30px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-weight: 500; }
+    input[type="text"], input[type="email"], input[type="number"] {
+      width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;
+    }
+    .cart-summary, .order-summary { background: #faf6f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+    .cart-item { display: flex; align-items: center; margin-bottom: 12px; }
+    .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; margin-right: 12px; }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { font-weight: 500; }
+    .cart-item-qty { color: #555; font-size: 0.97em; margin-bottom: 2px;}
+    .cart-item-price { color: #a75813; }
+    .payment-methods label { margin-right: 20px; }
+    .pay-btn {
+      background: #a75813; color: #fff; border: none; border-radius: 8px; padding: 14px 28px;
+      font-size: 18px; cursor: pointer; width: 100%; margin-top: 18px; transition: background 0.3s;
+    }
+    .pay-btn:hover { background: #844511; }
+    .success-message { display: none; color: green; text-align: center; font-size: 20px; margin-top: 20px; }
+    .card-details, .upi-details { display: none; margin-top: 15px; }
+    .qr-code-img { display: block; margin: 0 auto; width: 180px; height: 180px; background: #fff; border: 1px solid #eee; border-radius: 12px; }
+    .upi-id { text-align: center; font-size: 16px; color: #555; margin-top: 6px;}
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .order-label {
+      font-weight: 500;
+      color: #444;
+    }
+    .order-value {
+      font-weight: bold;
+      color: #a75813;
+    }
+    .total-row .order-value {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2><i class="fas fa-credit-card"></i> Payment</h2>
+
+    <!-- Cart/Product Summary -->
+    <div class="section cart-summary" id="cart-summary"></div>
+
+    <!-- Shipping Address -->
+    <div class="section">
+      <h3>Shipping Address</h3>
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" required>
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email (optional)</label>
+        <input type="email" id="email">
+      </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="section">
+      <h3>Payment Method</h3>
+      <div class="payment-methods">
+        <label>
+          <input type="radio" name="payment" value="card" checked onchange="togglePaymentDetails()"> 
+          <i class="fas fa-credit-card"></i> Credit/Debit Card
+        </label>
+        <label>
+          <input type="radio" name="payment" value="upi" onchange="togglePaymentDetails()"> 
+          <i class="fas fa-university"></i> UPI/Net Banking
+        </label>
+        <label>
+          <input type="radio" name="payment" value="cod" onchange="togglePaymentDetails()"> 
+          <i class="fas fa-money-bill-wave"></i> Cash on Delivery
+        </label>
+      </div>
+      <!-- Card Details Placeholder -->
+      <div class="card-details" id="card-details">
+        <div class="form-group">
+          <label for="card-number">Card Number</label>
+          <input type="text" id="card-number" maxlength="19" placeholder="1234 5678 9012 3456">
+        </div>
+        <div class="form-group">
+          <label for="card-holder">Card Holder Name</label>
+          <input type="text" id="card-holder" placeholder="Your Name">
+        </div>
+        <div class="form-group" style="display:flex; gap:50px;">
+          <div style="flex:1;">
+            <label for="card-expiry">Expiry (MM/YY)</label>
+            <input type="text" id="card-expiry" maxlength="5" placeholder="MM/YY">
+          </div>
+          <div style="flex:1;">
+            <label for="card-cvv">CVV</label>
+            <input type="password" id="card-cvv" maxlength="4" placeholder="***">
+          </div>
+        </div>
+      </div>
+      <!-- UPI Details Placeholder -->
+      <div class="upi-details" id="upi-details">
+        <div style="text-align:center;">
+          <img class="qr-code-img" src="https://upi-qr.vercel.app/api/getqr/YourStore/yourupi@bank/1000" alt="UPI QR Code">
+          <div class="upi-id">UPI ID: <b>yourupi@bank</b></div>
+          <div style="font-size:13px; color:#888; margin-top:8px;">Scan this code with any UPI app to pay.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="section order-summary" id="order-summary"></div>
+
+    <button class="pay-btn" onclick="payNow()">Pay Now</button>
+    <div class="success-message" id="successMsg">Payment Successful! Thank you for your order.</div>
+  </div>
+
+  <script>
+    // Always use the latest cart from localStorage
+    function renderSummary() {
+      const cartSummaryDiv = document.getElementById('cart-summary');
+      const orderSummaryDiv = document.getElementById('order-summary');
+      let items = [];
+      let subtotal = 0;
+
+      // 1. Try to get "Buy Now" product
+      const buyNowProduct = JSON.parse(localStorage.getItem('buyNowProduct'));
+      if (buyNowProduct && (buyNowProduct.name || buyNowProduct.title)) {
+        items.push(buyNowProduct);
+      } else {
+        // 2. If not, get all items from cart
+        items = JSON.parse(localStorage.getItem('cart')) || [];
+      }
+
+      let html = '<h3>Summary</h3>';
+      if (items.length === 0) {
+        html += '<p>Your cart is empty.</p>';
+      } else {
+        items.forEach(item => {
+          const imagePath = item.image ? item.image : 'images/default.jpg';
+          const quantity = item.quantity ? parseInt(item.quantity) : 1;
+          const price = item.sale_price || item.price;
+          const lineTotal = price * quantity;
+          subtotal += lineTotal;
+          html += `
+            <div class="cart-item">
+              <img src="${imagePath}" alt="${item.title || item.name}">
+              <div class="cart-item-details">
+                <div class="cart-item-name">${item.title || item.name}${item.carat ? ' - ' + item.carat + ' Carats' : ''}</div>
+                <div class="cart-item-qty">Qty: ${quantity}</div>
+                <div class="cart-item-price">₹${lineTotal}</div>
+              </div>
+            </div>
+          `;
+        });
+      }
+      cartSummaryDiv.innerHTML = html;
+
+      // Order summary
+      const shipping = items.length > 0 ? 50 : 0;
+      const total = subtotal + shipping;
+      orderSummaryDiv.innerHTML = `
+          <h3>Order Summary</h3>
+          <div class="order-row">
+              <span class="order-label">Subtotal</span>
+              <span class="order-value">₹${subtotal}</span>
+          </div>
+          <div class="order-row">
+              <span class="order-label">Shipping</span>
+              <span class="order-value">₹${shipping}</span>
+          </div>
+          <div class="order-row total-row">
+              <span class="order-label">Total</span>
+              <span class="order-value">₹${total}</span>
+          </div>
+      `;
+      if (document.querySelector('.qr-code-img')) {
+        document.querySelector('.qr-code-img').src =
+          `https://upi-qr.vercel.app/api/getqr/YourStore/yourupi@bank/${total}`;
+      }
+    }
+
+    // Render summary on page load
+    renderSummary();
+
+    function payNow() {
+      // Validate input (simple check)
+      if (!document.getElementById('fullname').value.trim() ||
+          !document.getElementById('address').value.trim() ||
+          !document.getElementById('mobile').value.trim()) {
+        alert('Please fill all required fields.');
+        return;
+      }
+      // If card selected, check card details
+      if (document.querySelector('input[name="payment"]:checked').value === "card") {
+        if (!document.getElementById('card-number').value.trim() ||
+            !document.getElementById('card-holder').value.trim() ||
+            !document.getElementById('card-expiry').value.trim() ||
+            !document.getElementById('card-cvv').value.trim()) {
+          alert('Please fill all card details.');
+          return;
+        }
+      }
+      document.getElementById('successMsg').style.display = 'block';
+
+      // Clear buyNowProduct and/or cart after payment
+      localStorage.removeItem('buyNowProduct');
+      localStorage.removeItem('cart');
+
+      setTimeout(() => {
+        window.location.href = "thankyou.html"; // Redirect to thank you/order confirmation page
+      }, 2000);
+    }
+
+    // --- PAYMENT METHOD TOGGLE ---
+    function togglePaymentDetails() {
+      const selected = document.querySelector('input[name="payment"]:checked').value;
+      document.getElementById('card-details').style.display = selected === 'card' ? 'block' : 'none';
+      document.getElementById('upi-details').style.display = selected === 'upi' ? 'block' : 'none';
+    }
+    // Initial call
+    togglePaymentDetails();
+  </script>
+</body>
+</html>

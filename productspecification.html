@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Specification</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        .product-detail-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .product-image-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-image-fixed-container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1/1;
+            background: #f8f8f8;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-image-fixed-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+        .thumbnail-strip {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .thumbnail-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border 0.2s;
+        }
+        .thumbnail-container.selected {
+            border: 2px solid #a75813;
+        }
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+        .product-info-right { flex: 2; }
+        .product-info-right h2 { color: #a75813; margin-top: 0; }
+        .price-detail { margin-bottom: 15px; }
+        .sale-price-detail {
+            font-size: 1.5em;
+            color: #d47f00;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .regular-price-detail {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 0.9em;
+        }
+        .discount-detail {
+            color: green;
+            font-size: 0.9em;
+        }
+        .sku-origin {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .size-chart {
+            margin-top: 20px;
+            color: #a75813;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .quality-feature-btn {
+            background: #198a1f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 22px;
+            font-size: 1em;
+            margin-top: 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+        .quality-feature-btn:hover {
+            background: #146c17;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .quantity-btn {
+            background: #eee;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2em;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .quantity-btn:hover {
+            background: #ddd;
+        }
+        .quantity-input {
+            width: 48px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 4px 0;
+        }
+        .add-to-cart-buy {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .add-to-cart-buy button {
+            background-color: #a75813;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .add-to-cart-buy button:hover { background-color: #844511; }
+        .product-specifications-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        .product-specifications-table th,
+        .product-specifications-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .product-specifications-table th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+        .return-policy {
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        /* Quality Modal */
+        .quality-modal-bg {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.35);
+            justify-content: center;
+            align-items: center;
+        }
+        .quality-modal-bg.active {
+            display: flex;
+        }
+        .quality-modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px 32px 20px 32px;
+            max-width: 400px;
+            width: 95vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            text-align: left;
+            position: relative;
+        }
+        .quality-modal h3 {
+            color: #198a1f;
+            margin-top: 0;
+        }
+        .quality-modal ul {
+            padding-left: 20px;
+            margin: 12px 0 0 0;
+        }
+        .quality-modal .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.4em;
+            color: #888;
+            cursor: pointer;
+        }
+        .quality-modal .close-btn:hover {
+            color: #a75813;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="menu">
+            <div class="menu-left">
+                <img src="static/images/image_search_1745417486552.png" alt="Gem icon" style="height: 35px; vertical-align: middle; margin-right: 8px;">
+                <span style="font-weight:bold; font-size:18px;">Naginawala</span>
+            </div>
+            <div class="menu-right">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <div class="dropdown">
+                    <a href="product.html" class="dropbtn">Products</a>
+                    <div class="dropdown-content">
+                        <a href="product.html#natural-gemstones">Natural Gemstones</a>
+                        <a href="product.html#semi-precious">Semi-Precious Gemstones</a>
+                        <a href="product.html#astrology-items">Astrology Items</a>
+                        <a href="product.html#healing-products">Healing Products</a>
+                    </div>
+                </div>
+                <a href="contact.html">Contact</a>
+                <a href="#" onclick="openSearch()"><i class="fas fa-search" style="color: blue;"></i></a>
+                <a href="wishlist.html"><i class="fas fa-heart" style="color: red;"></i></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart" style="color: green;"></i></a>
+                <a href="login.html"><i class="fas fa-user" style="color: orange;"></i></a>
+            </div>
+        </nav>
+        <div class="product-detail-container" id="product-detail-container" style="display:none;">
+            <div class="product-image-left">
+                <div class="main-image-fixed-container">
+                    <img id="product-image" src="" alt="">
+                </div>
+                <div class="thumbnail-strip" id="thumbnail-strip"></div>
+            </div>
+            <div class="product-info-right">
+                <h2 id="product-name"></h2>
+                <div class="price-detail">
+                    <span class="sale-price-detail" id="sale-price"></span>
+                    <span class="regular-price-detail" id="regular-price"></span>
+                    <span class="discount-detail" id="discount"></span>
+                </div>
+                <div class="sku-origin" id="sku-origin"></div>
+                <div class="size-chart">Size Chart</div>
+                <button class="quality-feature-btn" onclick="openQualityModal()">
+                    <i class="fas fa-star"></i> Quality Features
+                </button>
+                <!-- Quantity Selector -->
+                <div class="quantity-selector">
+                    <button class="quantity-btn" onclick="changeQuantity(-1)"><i class="fas fa-minus"></i></button>
+                    <input type="number" min="1" id="quantity-input" class="quantity-input" value="1" onchange="manualQuantityChange()" />
+                    <button class="quantity-btn" onclick="changeQuantity(1)"><i class="fas fa-plus"></i></button>
+                </div>
+                <div class="add-to-cart-buy">
+                    <button onclick="addToCartSpec()">Add to cart</button>
+                    <button class="buy-now-btn" onclick="buyNowSpec()">BUY NOW</button>
+                </div>
+                <div class="product-specifications">
+                    <h3>Product Specifications</h3>
+                    <table class="product-specifications-table" id="spec-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spec-tbody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="not-found" style="display:none;text-align:center;margin-top:50px;">
+            <h2>Product not found</h2>
+            <a href="product.html">Back to Products</a>
+        </div>
+
+        <!-- Quality Feature Modal -->
+        <div class="quality-modal-bg" id="qualityModalBg">
+            <div class="quality-modal">
+                <button class="close-btn" onclick="closeQualityModal()" title="Close">&times;</button>
+                <h3><i class="fas fa-star"></i> Quality Features</h3>
+                <ul>
+                    <li>100% Natural & Untreated Gemstone</li>
+                    <li>Certified Authenticity</li>
+                    <li>Premium Cut & Clarity</li>
+                    <li>Handpicked by Experts</li>
+                    <li>Secure Packaging</li>
+                    <li>Easy Returns Policy</li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+        let currentProduct = null; // We'll use this for add to cart!
+        let currentQuantity = 1;
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const productId = getQueryParam('id');
+        const productTitle = getQueryParam('title');
+
+        Papa.parse("static/products_3.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                const rows = results.data;
+                let product = null;
+                if (productId) {
+                    product = rows.find(r => r.id && r.id.trim() === productId);
+                } else if (productTitle) {
+                    product = rows.find(r => r.title && r.title.trim().toLowerCase() === productTitle.trim().toLowerCase());
+                }
+                if (product) {
+                    currentProduct = product; // Save for add to cart
+                    fillProductDetails(product);
+                } else {
+                    document.getElementById('not-found').style.display = 'block';
+                }
+            }
+        });
+
+        function fillProductDetails(product) {
+            document.getElementById('product-detail-container').style.display = 'flex';
+
+            // Product images
+            let imgSrc = product.image ? product.image.trim() : '';
+            let imgSrc2 = product.image2 ? product.image2.trim() : '';
+            if (imgSrc && !/^https?:\/\//.test(imgSrc) && !imgSrc.startsWith('static/images/')) {
+                imgSrc = 'static/images/' + imgSrc;
+            }
+            if (imgSrc2 && !/^https?:\/\//.test(imgSrc2) && !imgSrc2.startsWith('static/images/')) {
+                imgSrc2 = 'static/images/' + imgSrc2;
+            }
+            if (!imgSrc) imgSrc = 'static/images/default.jpg';
+            if (!imgSrc2) imgSrc2 = imgSrc;
+
+            // Main image
+            document.getElementById('product-image').src = imgSrc;
+            document.getElementById('product-image').alt = product.title;
+
+            // Thumbnails
+            const thumbHTML = `
+                <div class="thumbnail-container selected" onclick="selectMainImageSpec('${imgSrc}', this)">
+                    <img src="${imgSrc}" alt="Front">
+                </div>
+                <div class="thumbnail-container" onclick="selectMainImageSpec('${imgSrc2}', this)">
+                    <img src="${imgSrc2}" alt="Back">
+                </div>
+            `;
+            document.getElementById('thumbnail-strip').innerHTML = thumbHTML;
+
+            // Name
+            document.getElementById('product-name').textContent = product.title + (product.carat ? ` - ${product.carat} Carats` : '');
+
+            // Price
+            document.getElementById('sale-price').textContent = product.sale_price ? `Rs. ${Number(product.sale_price).toLocaleString()}` : '';
+            document.getElementById('regular-price').textContent = product.regular_price ? `Rs. ${Number(product.regular_price).toLocaleString()}` : '';
+            document.getElementById('discount').textContent = product.discount ? `(${product.discount}% off)` : '';
+
+            // SKU and Origin
+            let skuOrigin = '';
+            if (product.sku) skuOrigin += `SKU: ${product.sku} <br>`;
+            if (product.Origin) skuOrigin += `Origin: ${product.Origin}`;
+            document.getElementById('sku-origin').innerHTML = skuOrigin;
+
+            // Specifications table
+            const features = [
+                { label: "Boosts Energy", key: "Boosts Energy" },
+                { label: "Promotes Success", key: "Promotes Success" },
+                { label: "Increases Vitality", key: "Increases Vitality" },
+                { label: "Strengthens Confidence", key: "Strengthens Confidence" },
+                { label: "Mineral Species", key: "Mineral Species" },
+                { label: "Origin", key: "Origin" },
+                { label: "Carat", key: "Carat" },
+                { label: "Weight in grams", key: "Weight in grams" },
+                { label: "Color", key: "Color" },
+                { label: "Shape", key: "Shape" },
+                { label: "Cut", key: "Cut" },
+                { label: "Treatment", key: "Treatment" },
+                { label: "Certification", key: "Certification" },
+                { label: "Ratti", key: "Ratti" },
+                { label: "Return Policy", key: "Return Policy" },
+                { label: "Dimension Type", key: "Dimension Type" },
+                { label: "Specific Gravity", key: "Specific Gravity" },
+                { label: "Refractive Index", key: "Refractive Index" }
+            ];
+            const tbody = document.getElementById('spec-tbody');
+            tbody.innerHTML = '';
+            features.forEach(f => {
+                let val = product[f.key] || '-';
+                if (f.label === "Return Policy" && val && val !== '-') {
+                    val = `<span class="return-policy" onclick="alert('${val.replace(/'/g, "\\'")}')">Click Here</span>`;
+                }
+                tbody.innerHTML += `<tr><td>${f.label}</td><td>${val}</td></tr>`;
+            });
+        }
+
+        // Thumbnail click logic
+        function selectMainImageSpec(imgSrc, clickedThumb) {
+            document.getElementById('product-image').src = imgSrc;
+            document.querySelectorAll('.thumbnail-container').forEach(el => el.classList.remove('selected'));
+            clickedThumb.classList.add('selected');
+        }
+
+        // Quantity selector logic
+        function changeQuantity(delta) {
+            let input = document.getElementById('quantity-input');
+            let value = parseInt(input.value) || 1;
+            value += delta;
+            if (value < 1) value = 1;
+            input.value = value;
+        }
+        function manualQuantityChange() {
+            let input = document.getElementById('quantity-input');
+            let value = parseInt(input.value) || 1;
+            if (value < 1) value = 1;
+            input.value = value;
+        }
+        function getQuantity() {
+            let input = document.getElementById('quantity-input');
+            let value = parseInt(input.value) || 1;
+            return value < 1 ? 1 : value;
+        }
+
+        // Add to cart: store the RELATIVE image path from the CSV!
+        function addToCartSpec() {
+            if (!currentProduct) return;
+            let imgPath = currentProduct.image ? currentProduct.image.trim() : '';
+            if (imgPath && !/^https?:\/\//.test(imgPath) && !imgPath.startsWith('static/images/')) {
+                imgPath = 'static/images/' + imgPath;
+            }
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({
+                id: currentProduct.id,
+                name: currentProduct.title,
+                price: currentProduct.sale_price,
+                carat: currentProduct.carat,
+                image: imgPath,
+                quantity: getQuantity()
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${currentProduct.title} (x${getQuantity()}) added to cart!`);
+        }
+        function buyNowSpec() {
+            if (!currentProduct) return;
+            let imgPath = currentProduct.image ? currentProduct.image.trim() : '';
+            if (imgPath && !/^https?:\/\//.test(imgPath) && !imgPath.startsWith('static/images/')) {
+                imgPath = 'static/images/' + imgPath;
+            }
+            let quantity = getQuantity();
+            let price = parseFloat(currentProduct.sale_price) || 0;
+            localStorage.setItem('buyNowProduct', JSON.stringify({
+                id: currentProduct.id,
+                name: currentProduct.title,
+                price: price,
+                carat: currentProduct.carat,
+                image: imgPath,
+                quantity: quantity,
+                total: price * quantity
+            }));
+            window.location.href = "payment.html";
+        }
+
+        // Quality Modal Logic
+        function openQualityModal() {
+            document.getElementById('qualityModalBg').classList.add('active');
+        }
+        function closeQualityModal() {
+            document.getElementById('qualityModalBg').classList.remove('active');
+        }
+        </script>
+<footer class="naginawala-footer-main">
+    <div class="naginawala-footer-content">
+      <div class="naginawala-footer-brand">
+        <img src="your-logo.png" alt="Naginawala Logo" class="naginawala-footer-logo">
+        <div>
+          <span class="naginawala-footer-brandname">Naginawala</span>
+          <div class="naginawala-footer-byline">by Mr.Suresh Saini</div>
+        </div>
+      </div>
+      <div class="naginawala-footer-columns">
+        <!-- CONTACT US -->
+        <div class="naginawala-footer-col">
+          <h4>CONTACT US</h4>
+          <p>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:support@naginawala.com" class="naginawala-footer-link">support@naginawala.com</a>
+          </p>
+          <p>Gemstone Expert (New Orders):<br>
+            <i class="fas fa-phone"></i>
+            <a href="tel:+911234567890" class="naginawala-footer-link">+91-7742032307</a>
+          </p>
+          <p>Support & Order Enquiry:<br>
+            <i class="fas fa-headset"></i>
+            <a href="tel:+919876543210" class="naginawala-footer-link">+91-9828085095</a>
+          </p>
+        </div>
+        <!-- COMPANY -->
+        <div class="naginawala-footer-col naginawala-footer-links">
+          <h4>COMPANY</h4>
+          <ul>
+            <li><a href="about.html">About us</a></li>
+            <li><a href="about.html">Blogs</a></li>
+            <li><a href="track_order.html">Track Your Order</a></li>
+            <li><a href="custome_review.html">Customer reviews</a></li>
+          </ul>
+        </div>
+        <!-- POLICIES -->
+        <div class="naginawala-footer-col naginawala-footer-links">
+            <h4>POLICIES</h4>
+            <ul>
+            <li><a href="refund_policy.html">Refund Policy</a></li>
+            <li><a href="shipping_policy.html">Shipping Policy</a></li>
+            <li><a href="privacy_policy.html">Privacy Policy</a></li>
+            <li><a href="terms_condition.html">Terms and Conditions</a></li>
+            </ul>
+        </div>
+        <!-- NEWSLETTER -->
+        <div class="naginawala-footer-col naginawala-footer-newsletter">
+          <h4>NEWSLETTER</h4>
+          <p>Sign up and get <b>10% off</b></p>
+          <form class="naginawala-footer-newsletter-form">
+            <input type="email" placeholder="E-mail" required>
+            <button type="submit">SUBSCRIBE</button>
+          </form>
+          <div class="naginawala-footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+</footer>
+<footer>
+    &copy; 2030 Naginawala &nbsp;<span class="separator">|</span> Design by <a href="/">costheta.ai</a>
+</footer>
+<!-- WhatsApp Chat Icon -->
+<a href="https://wa.me/917742032307" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/whatsapp.svg" alt="WhatsApp" />
+</a>
+    </div>
+</body>
+</html>

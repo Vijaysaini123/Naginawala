@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us - Naginawala</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .contact-form {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    .contact-form h1 {
+      text-align: center;
+      color: #a75813;
+      margin-bottom: 20px;
+    }
+    .contact-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #a75813;
+    }
+    .contact-form button {
+      width: 100%;
+      padding: 14px;
+      background: #a75813;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .contact-form button:hover {
+      background: #844511;
+    }
+    .alert-success {
+      color: green;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .alert-error {
+      color: red;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="menu">
+  <div class="menu-left">
+    <img src="images/image_search_1745417486552.png" alt="Gem Icon">
+    <span style="font-weight:bold; font-size:18px;">Naginawala</span>
+  </div>
+  <div class="menu-right">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <div class="dropdown">
+      <a href="product.html" class="dropbtn">Products</a>
+      <div class="dropdown-content">
+        <a href="product.html#natural-gemstones">Natural Gemstones</a>
+        <a href="product.html#semi-precious">Semi-Precious Gemstones</a>
+        <a href="product.html#astrology-items">Astrology Items</a>
+        <a href="product.html#healing-products">Healing Products</a>
+      </div>
+    </div>
+    <a href="contact.html">Contact</a>
+    <a href="#" onclick="openSearch()"><i class="fas fa-search" style="color: blue;"></i></a>
+    <a href="wishlist.html"><i class="fas fa-heart" style="color: red;"></i></a>
+    <a href="cart.html"><i class="fas fa-shopping-cart" style="color: green;"></i></a>
+    <a href="login.html"><i class="fas fa-user" style="color: orange;"></i></a>
+  </div>
+</nav>
+
+<div class="container">
+  <form class="contact-form" method="post" action="">
+    <h1>Contact Us</h1>
+    {% if success %}
+      <div class="alert-success">Your message has been sent successfully!</div>
+    {% elif error %}
+      <div class="alert-error">Error: {{ error }}</div>
+    {% endif %}
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Your full name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Your email address" required>
+
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" name="subject" placeholder="Subject of your message" required>
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+</div>
+
+<footer>
+  &copy; 2030 Naginawala &nbsp;<span class="separator">|</span> Design by <a href="/">costheta.ai</a>
+</footer>
+<script>
+function openSearch() {
+  let query = prompt("What are you searching for?");
+  if (query) {
+    alert("Searching for: " + query);
+    // You can later connect this to real search results
+  }
+}
+</script>
+<!-- WhatsApp Chat Icon -->
+<a href="https://wa.me/917742032307" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+  <img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/whatsapp.svg" alt="WhatsApp" />
+</a>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wishlist - Naginawala</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 320px);
+            gap: 32px;
+            justify-items: left;
+            align-items: stretch;
+            margin: 24px 0;
+        }
+        .product {
+            background: #fff;
+            border: 2px solid #222;
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 16px 12px 12px 12px;
+            width: 320px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+        .product h3 {
+            text-align: center;
+            font-size: 1.15rem;
+            margin: 14px 0 6px 0;
+        }
+        .price-container {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .regular-price {
+            text-decoration: line-through;
+            color: #888;
+            margin-right: 7px;
+        }
+        .sale-price {
+            color: #a75813;
+            font-weight: bold;
+            margin-right: 7px;
+        }
+        .discount {
+            color: #198a1f;
+            font-size: 1.01em;
+        }
+        .product-actions {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .product-actions button {
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #fff;
+            transition: background 0.2s;
+        }
+        .product-actions button:first-child {
+            color: #c00;
+            border: 1px solid #c00;
+        }
+        .product-actions button:last-child {
+            color: #198a1f;
+            border: 1px solid #198a1f;
+        }
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 220px;
+            aspect-ratio: 1/1;
+            margin: 0 auto 0 auto;
+            overflow: hidden;
+            background: #f8f8f8;
+            border-radius: 10px 10px 10px 10px;
+        }
+        .product-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="menu">
+            <div class="menu-left">
+                <img src="static/images/image_search_1745417486552.png" alt="Gem icon" style="height: 35px; vertical-align: middle; margin-right: 8px;" />
+                <span style="font-weight:bold; font-size:18px;">Naginawala</span>
+            </div>
+            <div class="menu-right">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <div class="dropdown">
+                    <a href="product.html" class="dropbtn">Products</a>
+                    <div class="dropdown-content">
+                        <a href="product.html#natural-gemstones">Natural Gemstones</a>
+                        <a href="product.html#semi-precious">Semi-Precious Gemstones</a>
+                        <a href="product.html#astrology-items">Astrology Items</a>
+                        <a href="product.html#healing-products">Healing Products</a>
+                    </div>
+                </div>
+                <a href="contact.html">Contact</a>
+                <a href="#" onclick="openSearch()"><i class="fas fa-search" style="color: blue;"></i></a>
+                <a href="wishlist.html"><i class="fas fa-heart" style="color: red;"></i></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart" style="color: green;"></i></a>
+                <a href="login.html"><i class="fas fa-user" style="color: orange;"></i></a>
+            </div>
+        </nav>
+        <h2>Your Wishlist</h2>
+        <div id="wishlist-container" class="products-grid"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+        <script>
+            let productData = {};
+
+            // Load all product data from CSV for reference
+            function loadCSVData(callback) {
+                Papa.parse("static/products_3.csv", {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        const rows = results.data;
+                        rows.forEach(row => {
+                            if (!productData[row.category]) {
+                                productData[row.category] = [];
+                            }
+                            const id = row.id ? row.id.trim() : '';
+                            const title = row.title ? row.title.trim() : '';
+                            const carat = row.carat ? parseFloat(row.carat.trim()) : null;
+                            const regular_price = row.regular_price ? parseFloat(row.regular_price.trim().replace(/,/g, '')) : null;
+                            const sale_price = row.sale_price ? parseFloat(row.sale_price.trim().replace(/,/g, '')) : null;
+                            const discount = row.discount ? parseInt(row.discount.trim()) : null;
+                            const image = row.image ? row.image.trim() : '';
+                            const category = row.category ? row.category.trim() : '';
+
+                            if(id && title && regular_price && sale_price && discount && category) {
+                                productData[category].push({
+                                    id: String(id),
+                                    title: title,
+                                    carat: carat,
+                                    regular_price: regular_price,
+                                    sale_price: sale_price,
+                                    discount: discount,
+                                    image: image,
+                                    category: category
+                                });
+                            }
+                        });
+                        callback();
+                    },
+                    error: function(error) {
+                        console.error("Error parsing CSV:", error);
+                    }
+                });
+            }
+
+            // Find product details by id
+            function findProductById(id) {
+                for (const category in productData) {
+                    const product = productData[category].find(p => String(p.id) === String(id));
+                    if (product) return product;
+                }
+                return null;
+            }
+
+            // Render wishlist items
+            function renderWishlist() {
+                const wishlistContainer = document.getElementById('wishlist-container');
+                let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                wishlistContainer.innerHTML = '';
+
+                if (wishlist.length === 0) {
+                    wishlistContainer.innerHTML = '<p>Your wishlist is empty.</p>';
+                    return;
+                }
+
+                wishlist.forEach(id => {
+                    const product = findProductById(id);
+                    if (!product) return;
+                    const caratInfo = product.carat ? `${product.carat} Carats` : '';
+                    const imagePath = product.image
+                        ? `<div class="product-image-wrapper"><img src="${product.image}" alt="${product.title}"></div>`
+                        : `<div class="product-image-wrapper"><img src="placeholder.jpg" alt="${product.title}"></div>`;
+
+                    const productHTML = `
+                        <div class="product">
+                            <a href="productspecification.html?id=${product.id}" style="text-decoration:none; color:inherit;">
+                            ${imagePath}
+                            <h3>${product.title} - ${caratInfo}</h3>
+                            </a>
+                            
+                            <div class="price-container">
+                                <span class="regular-price">Rs. ${Number(product.regular_price).toLocaleString()}</span>
+                                <span class="sale-price">Rs. ${Number(product.sale_price).toLocaleString()}</span>
+                                <span class="discount">(${product.discount}% off)</span>
+                            </div>
+                            <div class="product-actions">
+                                <button onclick="removeFromWishlist('${product.id}')">
+                                    <i class="fas fa-trash" style="color: red;"></i> Remove
+                                </button>
+                                <button onclick="moveToCart('${product.id}')">
+                                    <i class="fas fa-shopping-cart" style="color: green;"></i> Move to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    wishlistContainer.innerHTML += productHTML;
+                });
+            }
+
+            // Remove product from wishlist by id
+            function removeFromWishlist(id) {
+                let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                wishlist = wishlist.filter(item => String(item) !== String(id));
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert("Removed from your wishlist!");
+                renderWishlist();
+            }
+
+ 
+
+
+            // Move product from wishlist to cart by id
+            function moveToCart(id) {
+                const product = findProductById(id);
+                if (!product) return;
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push({ id: product.id, name: product.title, price: product.sale_price, carat: product.carat || 0 });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(product.title + " has been moved to your cart!");
+                removeFromWishlist(id);
+            }
+
+            function openSearch() {
+                let query = prompt("What are you searching for?");
+                if (query) {
+                    alert("Searching for: " + query);
+                }
+            }
+
+            window.onload = function() {
+                loadCSVData(renderWishlist);
+            };
+        </script>
+
+<footer class="naginawala-footer-main">
+    <div class="naginawala-footer-content">
+      <div class="naginawala-footer-brand">
+        <img src="your-logo.png" alt="Naginawala Logo" class="naginawala-footer-logo">
+        <div>
+          <span class="naginawala-footer-brandname">Naginawala</span>
+          <div class="naginawala-footer-byline">by Mr.Suresh Saini</div>
+        </div>
+      </div>
+      <div class="naginawala-footer-columns">
+        <!-- CONTACT US -->
+        <div class="naginawala-footer-col">
+          <h4>CONTACT US</h4>
+          <p>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:support@naginawala.com" class="naginawala-footer-link">support@naginawala.com</a>
+          </p>
+          <p>Gemstone Expert (New Orders):<br>
+            <i class="fas fa-phone"></i>
+            <a href="tel:+911234567890" class="naginawala-footer-link">+91-7742032307</a>
+          </p>
+          <p>Support & Order Enquiry:<br>
+            <i class="fas fa-headset"></i>
+            <a href="tel:+919876543210" class="naginawala-footer-link">+91-9828085095</a>
+          </p>
+        </div>
+        <!-- COMPANY -->
+        <div class="naginawala-footer-col naginawala-footer-links">
+          <h4>COMPANY</h4>
+          <ul>
+            <li><a href="about.html">About us</a></li>
+            <li><a href="about.html">Blogs</a></li>
+            <li><a href="track_order.html">Track Your Order</a></li>
+            <li><a href="custome_review.html">Customer reviews</a></li>
+          </ul>
+        </div>
+        <!-- POLICIES -->
+        <div class="naginawala-footer-col naginawala-footer-links">
+            <h4>POLICIES</h4>
+            <ul>
+            <li><a href="refund_policy.html">Refund Policy</a></li>
+            <li><a href="shipping_policy.html">Shipping Policy</a></li>
+            <li><a href="privacy_policy.html">Privacy Policy</a></li>
+            <li><a href="terms_condition.html">Terms and Conditions</a></li>
+            </ul>
+        </div>
+        <!-- NEWSLETTER -->
+        <div class="naginawala-footer-col naginawala-footer-newsletter">
+          <h4>NEWSLETTER</h4>
+          <p>Sign up and get <b>10% off</b></p>
+          <form class="naginawala-footer-newsletter-form">
+            <input type="email" placeholder="E-mail" required>
+            <button type="submit">SUBSCRIBE</button>
+          </form>
+          <div class="naginawala-footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+</footer>
+<footer>
+    &copy; 2030 Naginawala &nbsp;<span class="separator">|</span> Design by <a href="/">costheta.ai</a>
+</footer>
+    </div>
+</body>
+</html>

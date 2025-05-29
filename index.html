@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Naginawala – Authentic Gemstones & Spiritual Treasures</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .features-section {
+  background: #fdfaf6;
+  padding: 32px 0 16px 0;
+}
+
+.features-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feature-item {
+  flex: 1 1 0;
+  text-align: center;
+  color: #2d1c0d;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  font-size: 1.07rem;
+  padding: 0 10px;
+}
+
+.feature-item i {
+  font-size: 2.2rem;
+  color: #ab5ee2;
+  border-radius: 50%;
+  border: 2px solid #ab5ee2;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(171,94,226,0.08);
+}
+
+.feature-divider {
+  width: 1px;
+  height: 48px;
+  background: #e8e1d9;
+  margin: 0 16px;
+}
+
+.product-range-section {
+  text-align: center;
+  padding: 36px 0 18px 0;
+  background: #fdfaf6;
+}
+
+.product-range-label {
+  color: #ab5ee2;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-range-label:before,
+.product-range-label:after {
+  content: "❦";
+  color: #ab5ee2;
+  font-size: 1.1rem;
+  margin: 0 6px;
+}
+
+.product-range-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #2d1c0d;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.product-range-subtitle {
+  color: #6d5d4d;
+  font-size: 1.15rem;
+  margin-bottom: 0;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .features-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .feature-divider {
+    width: 80%;
+    height: 1px;
+    margin: 16px auto;
+  }
+}
+
+      
+    </style>
+</head>
+<body>
+    <div class="container">
+    <nav class="menu">
+        <div class="menu-left">
+            <img src="static/images/image_search_1745417486552.png" alt="Gem icon" style="height: 35px; vertical-align: middle; margin-right: 8px;">
+            <span style="font-weight:bold; font-size:18px;">Naginawala</span>
+        </div>
+        <div class="menu-right">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <div class="dropdown">
+            <a href="product.html" class="dropbtn">Products</a>
+            <div class="dropdown-content">
+              <a href="product.html#natural-gemstones">Natural Gemstones</a>
+              <a href="product.html#semi-precious">Semi-Precious Gemstones</a>
+              <a href="product.html#astrology-items">Astrology Items</a>
+              <a href="product.html#healing-products">Healing Products</a>
+            </div>
+          </div>
+          <a href="contact.html">Contact</a>
+          <a href="#" onclick="openSearch()"><i class="fas fa-search" style="color: blue;"></i></a>
+          <a href="wishlist.html"><i class="fas fa-heart" style="color: red;"></i></a>
+          <a href="cart.html"><i class="fas fa-shopping-cart" style="color: green;"></i></a>
+          <a href="login.html"><i class="fas fa-user" style="color: orange;"></i></a>
+        </div>
+    </nav>
+<!-- 
+    <section class="hero">
+      <h1>Welcome to Naginawala</h1>
+      <p>
+        Authentic Gemstones & Spiritual Treasures. <br>
+        Explore nature’s most powerful creations: gemstones, pyrites, rudrakshas, and motis – each chosen for their beauty, energy, and life-enhancing properties.
+      </p>
+    </section> -->
+    <section class="hero">
+        <!-- <h1>Connect with the Universe</h1> -->
+        <p>
+          “Do not feel lonely, the entire universe is inside of you.”<br>
+          <span style="font-size: 0.95em; color: #888;">— Rumi</span>
+        </p>
+    </section>
+    <!-- <section class="hero">
+        <h1>Connect with the Universe</h1>
+        <p>
+          “You are not IN the universe, you ARE the universe, an intrinsic part of it. Ultimately, you are not a person, but a focal point where the universe is becoming conscious of itself. What an amazing miracle.”<br>
+          <span style="font-size: 0.95em; color: #888;">— Eckhart Tolle</span>
+        </p>
+    </section> -->
+
+    <section class="mainindex">
+      <div id="home-image">
+        <img src="static/images/image_search_1745417236311.jpg" alt="home image">
+      </div>
+      <p style="margin-bottom: 4px;font-size:20px;font-weight: bold;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #b069b5;letter-spacing: 0.5px;"> Welcome to Naginawala – Authentic Gemstones & Spiritual Treasures</p>
+      <br>
+     
+      <p>Step into a world where nature’s most profound creations are transformed into sources of spiritual strength, healing, and harmony. At Naginawala, we are dedicated to curating a unique collection of authentic gemstones, pyrites, rudrakshas, and motis—each meticulously selected for their natural beauty, powerful energy, and life-enhancing properties.
+      <br> <br>Our journey begins deep within the earth, where over millions of years, nature crafts these extraordinary treasures. Every gemstone that reaches your hands has traveled a remarkable path—from the heart of the earth through the skilled hands of artisans who cut, polish, and prepare them for you. We take pride in offering only the finest, ethically sourced products, ensuring that each piece is genuine and aligned with the highest standards of quality and authenticity
+      <br> <br>Whether you are seeking peace of mind, prosperity, healing, or protection, Naginawala stands as your trusted destination. Our gemstones are more than just beautiful adornments; they are tools for spiritual growth, helping you align your chakras, restore energy fields, and invite positive change into your life. Ancient cultures have long revered gemstones for their transformative power, and today, a new generation is rediscovering their magic—blending spiritual wisdom with modern elegance 
+      <br> <br>Explore our thoughtfully curated collections and discover how each gemstone, rudraksha, pyrite, and moti can become a companion on your spiritual journey. Let Naginawala guide you toward a life of balance, abundance, and well-being. Experience the true essence of nature’s gifts—where beauty, energy, and authenticity come together to inspire and uplift. </p>
+    </section>
+
+    <!-- <section class="catalog"> -->
+        <!-- Feature Highlights Section -->
+<section class="features-section">
+    <div class="features-row">
+      <div class="feature-item">
+        <i class="fas fa-gem"></i>
+        <p>Guarantee of Purity</p>
+      </div>
+      <div class="feature-divider"></div>
+      <div class="feature-item">
+        <i class="fas fa-certificate"></i>
+        <p>100% Natural & Certified</p>
+      </div>
+      <div class="feature-divider"></div>
+      <div class="feature-item">
+        <i class="fas fa-seedling"></i>
+        <p>Ethically Sourced</p>
+      </div>
+      <div class="feature-divider"></div>
+      <div class="feature-item">
+        <i class="fas fa-box"></i>
+        <p>Free Shipping</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section Heading -->
+  <section class="product-range-section">
+    <div class="product-range-label">
+      <span>PRODUCT RANGE</span>
+    </div>
+    <h2 class="product-range-title">Aura-synchronized treasures</h2>
+    <p class="product-range-subtitle">Channel and elevate your spiritual essence</p>
+  </section>
+  
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+        <!-- <h2 style="text-align:center; margin-top: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #a75813;">
+            Our Collections -->
+        </h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="static/images/image_search_1745417106732.png" alt="Natural Gemstones">
+                <h3>Natural Gemstones</h3>
+                <p>Ruby, Sapphire, Emerald, Diamond — pure beauty and powerful energy.</p>
+            </div>
+            <div class="product-card">
+                <img src="static/images/image_search_1745967308301.webp" alt="Pyrites">
+                <h3>Pyrites</h3>
+                <p>Known for protection, grounding, and boosting confidence.</p>
+            </div>
+            <div class="product-card">
+                <img src="static/images/rudra.png" alt="Certified Rudrakshas" onerror="this.onerror=null; this.src='images/placeholder.png';">
+                <h3>Certified Rudrakshas</h3>
+                <p>Bringing peace, wisdom, and spiritual growth into your life.</p>
+            </div>
+            <div class="product-card">
+                <img src="static/images/WhatsApp Image 2025-04-29 at 03.09.09.jpeg" alt="Pure Motis">
+                <h3>Pure Motis (Pearls)</h3>
+                <p>Enhance calmness, emotional balance, and mental clarity.</p>
+            </div>
+        </div>
+    </section>
+    <footer class="naginawala-footer-main">
+        <div class="naginawala-footer-content">
+          <div class="naginawala-footer-brand">
+            <img src="your-logo.png" alt="Naginawala Logo" class="naginawala-footer-logo">
+            <div>
+              <span class="naginawala-footer-brandname">Naginawala</span>
+              <div class="naginawala-footer-byline">by Mr.Suresh Saini</div>
+            </div>
+          </div>
+          <div class="naginawala-footer-columns">
+            <!-- CONTACT US -->
+            <div class="naginawala-footer-col">
+              <h4>CONTACT US</h4>
+              <p>
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:support@naginawala.com" class="naginawala-footer-link">support@naginawala.com</a>
+              </p>
+              <p>Gemstone Expert (New Orders):<br>
+                <i class="fas fa-phone"></i>
+                <a href="tel:+911234567890" class="naginawala-footer-link">+91-7742032307</a>
+              </p>
+              <p>Support & Order Enquiry:<br>
+                <i class="fas fa-headset"></i>
+                <a href="tel:+919876543210" class="naginawala-footer-link">+91-9828085095</a>
+              </p>
+            </div>
+            <!-- COMPANY -->
+            <div class="naginawala-footer-col naginawala-footer-links">
+              <h4>COMPANY</h4>
+              <ul>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="about.html">Blogs</a></li>
+                <li><a href="track_order.html">Track Your Order</a></li>
+                <li><a href="custome_review.html">Customer reviews</a></li>
+              </ul>
+            </div>
+            <!-- POLICIES -->
+            <div class="naginawala-footer-col naginawala-footer-links">
+                <h4>POLICIES</h4>
+                <ul>
+                <li><a href="refund_policy.html">Refund Policy</a></li>
+                <li><a href="shipping_policy.html">Shipping Policy</a></li>
+                <li><a href="privacy_policy.html">Privacy Policy</a></li>
+                <li><a href="terms_condition.html">Terms and Conditions</a></li>
+                </ul>
+            </div>
+            <!-- NEWSLETTER -->
+            <div class="naginawala-footer-col naginawala-footer-newsletter">
+              <h4>NEWSLETTER</h4>
+              <p>Sign up and get <b>10% off</b></p>
+              <form class="naginawala-footer-newsletter-form">
+                <input type="email" placeholder="E-mail" required>
+                <button type="submit">SUBSCRIBE</button>
+              </form>
+              <div class="naginawala-footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </footer>
+    <footer>
+        &copy; 2030 Naginawala &nbsp;<span class="separator">|</span> Design by <a href="/">costheta.ai</a>
+    </footer>
+    </div>
+    <!-- WhatsApp Chat Icon -->
+    <a href="https://wa.me/917742032307" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+        <img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/whatsapp.svg" alt="WhatsApp" />
+    </a>
+    <script>
+      function openSearch() {
+        let query = prompt("What are you searching for?");
+        if (query) {
+          alert("Searching for: " + query);
+        }
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Naginawala</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 220px;
+            aspect-ratio: 1/1;
+            margin: 0 auto 0 auto;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f8f8f8;
+            border-radius: 10px 10px 10px 10px;
+        }
+        .product-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+            transition: opacity 0.4s cubic-bezier(.4,0,.2,1);
+            position: absolute;
+            top: 0; left: 0;
+        }
+        .product-image-wrapper .back-img {
+            opacity: 0;
+            z-index: 2;
+        }
+        .product-image-wrapper .front-img {
+            opacity: 1;
+            z-index: 1;
+        }
+        .product-dot-strip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin: 0 auto;
+            padding: 4px 0 0 0;
+            width: 100%;
+            min-height: 18px;
+        }
+        .slider-dot {
+            width: 18px;
+            height: 4px;
+            border-radius: 2px;
+            background: #e0e0e0;
+            transition: background 0.2s;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            display: inline-block;
+            padding: 0;
+        }
+        .slider-dot.active {
+            background: #a75813;
+        }
+        .wishlist-btn i.fas.fa-heart {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="menu">
+            <div class="menu-left">
+                <img src="static/images/image_search_1745417486552.png" alt="Gem icon" style="height: 35px; vertical-align: middle; margin-right: 8px;">
+                <span style="font-weight:bold; font-size:18px;">Naginawala</span>
+            </div>
+            <div class="menu-right">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <div class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">Products</a>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="showCategory('natural-gemstones')">Natural Gemstones</a>
+                        <a href="#" onclick="showCategory('semi-precious')">Semi-Precious Gemstones</a>
+                        <a href="#" onclick="showCategory('astrology-items')">Astrology Items</a>
+                        <a href="#" onclick="showCategory('healing-products')">Healing Products</a>
+                    </div>
+                </div>
+                <a href="contact.html">Contact</a>
+                <a href="#" onclick="openSearch()"><i class="fas fa-search" style="color: blue;"></i></a>
+                <a href="wishlist.html"><i class="fas fa-heart" style="color: red;"></i></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart" style="color: green;"></i></a>
+                <a href="login.html"><i class="fas fa-user" style="color: orange;"></i></a>
+            </div>
+        </nav>
+        <section class="hero">
+            <p>
+              "Do not feel lonely, the entire universe is inside of you."<br>
+              <span style="font-size: 0.95em; color: #888;">— Rumi</span>
+            </p>
+        </section>
+
+        <div id="natural-gemstones" class="product-category" style="display: none;">
+            <h2>Natural Gemstones</h2>
+            <div id="natural-gemstones-container" class="products-grid"></div>
+        </div>
+        <div id="semi-precious" class="product-category" style="display: none;">
+            <h2>Semi-Precious Gemstones</h2>
+            <div id="semi-precious-container" class="products-grid"></div>
+        </div>
+        <div id="astrology-items" class="product-category" style="display: none;">
+            <h2>Astrology Items</h2>
+            <div id="astrology-items-container" class="products-grid"></div>
+        </div>
+        <div id="healing-products" class="product-category" style="display: none;">
+            <h2>Healing Products</h2>
+            <div id="healing-products-container" class="products-grid"></div>
+        </div>
+
+        <footer class="naginawala-footer-main">
+            <div class="naginawala-footer-content">
+              <div class="naginawala-footer-brand">
+                <img src="your-logo.png" alt="Naginawala Logo" class="naginawala-footer-logo">
+                <div>
+                  <span class="naginawala-footer-brandname">Naginawala</span>
+                  <div class="naginawala-footer-byline">by Mr.Suresh Saini</div>
+                </div>
+              </div>
+              <div class="naginawala-footer-columns">
+                <!-- CONTACT US -->
+                <div class="naginawala-footer-col">
+                  <h4>CONTACT US</h4>
+                  <p>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:support@naginawala.com" class="naginawala-footer-link">support@naginawala.com</a>
+                  </p>
+                  <p>Gemstone Expert (New Orders):<br>
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+911234567890" class="naginawala-footer-link">+91-7742032307</a>
+                  </p>
+                  <p>Support & Order Enquiry:<br>
+                    <i class="fas fa-headset"></i>
+                    <a href="tel:+919876543210" class="naginawala-footer-link">+91-9828085095</a>
+                  </p>
+                </div>
+                <!-- COMPANY -->
+                <div class="naginawala-footer-col naginawala-footer-links">
+                  <h4>COMPANY</h4>
+                  <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Blogs</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                    <li><a href="#">Customer reviews</a></li>
+                  </ul>
+                </div>
+                <!-- POLICIES -->
+                <div class="naginawala-footer-col naginawala-footer-links">
+                  <h4>POLICIES</h4>
+                  <ul>
+                    <li><a href="refund_policy.html">Refund Policy</a></li>
+                    <li><a href="shipping_policy.html">Shipping Policy</a></li>
+                    <li><a href="privacy_policy.html">Privacy Policy</a></li>
+                    <li><a href="terms_condition.html">Terms and Conditions</a></li>
+                  </ul>
+                </div>
+                <!-- NEWSLETTER -->
+                <div class="naginawala-footer-col naginawala-footer-newsletter">
+                  <h4>NEWSLETTER</h4>
+                  <p>Sign up and get <b>10% off</b></p>
+                  <form class="naginawala-footer-newsletter-form">
+                    <input type="email" placeholder="E-mail" required>
+                    <button type="submit">SUBSCRIBE</button>
+                  </form>
+                  <div class="naginawala-footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </footer>
+        <footer>
+            &copy; 2030 Naginawala | Design by <a href="/">costheta.ai</a>
+        </footer>
+    </div>
+    <!-- WhatsApp Chat Icon -->
+    <a href="https://wa.me/917742032307" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+        <img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/whatsapp.svg" alt="WhatsApp" />
+    </a>
+
+    <script>
+        let productData = {};
+
+        function loadCSVData(callback) {
+            Papa.parse("static/products_3.csv", {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const rows = results.data;
+                    rows.forEach(row => {
+                        if (!productData[row.category]) {
+                            productData[row.category] = [];
+                        }
+                        const id = row.id ? row.id.trim() : '';
+                        const title = row.title ? row.title.trim() : '';
+                        const carat = row.carat ? parseFloat(row.carat.trim()) : null;
+                        const regular_price = row.regular_price ? parseFloat(row.regular_price.trim().replace(/,/g, '')) : null;
+                        const sale_price = row.sale_price ? parseFloat(row.sale_price.trim().replace(/,/g, '')) : null;
+                        const discount = row.discount ? parseInt(row.discount.trim()) : null;
+                        const image = row.image ? row.image.trim() : '';
+                        const image2 = row.image2 ? row.image2.trim() : '';
+                        const category = row.category ? row.category.trim() : '';
+
+                        if(id && title && regular_price && sale_price && discount && category) {
+                            productData[category].push({
+                                id: Number(id),
+                                title: title,
+                                carat: carat,
+                                regular_price: regular_price,
+                                sale_price: sale_price,
+                                discount: discount,
+                                image: image,
+                                image2: image2,
+                                category: category
+                            });
+                        }
+                    });
+                    callback();
+                },
+                error: function(error) {
+                    console.error("Error parsing CSV:", error);
+                }
+            });
+        }
+
+        // Helper function to check if product is in wishlist
+        function isInWishlist(productTitle) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            return wishlist.includes(productTitle);
+        }
+
+        // Toggle wishlist function
+        function toggleWishlist(btn, productTitle) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const icon = btn.querySelector('i');
+            const index = wishlist.indexOf(productTitle);
+            if (index === -1) {
+                wishlist.push(productTitle);
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = 'red';
+                alert(" Added to wishlist!");
+            } else {
+                wishlist.splice(index, 1);
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = '';
+                alert(" Removed from wishlist!");
+            }
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        function showCategory(category) {
+            const categories = document.querySelectorAll('.product-category');
+            categories.forEach(categoryElement => {
+                categoryElement.style.display = 'none';
+            });
+
+            const categoryElement = document.getElementById(category);
+            if (!categoryElement) return;
+            categoryElement.style.display = 'block';
+            const containerId = `${category}-container`;
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const products = productData[category];
+            if (!products) {
+              container.innerHTML = `<p>No products found in this category.</p>`;
+              return;
+            }
+
+            products.forEach((product, idx) => {
+                const priceContainer = `<div class="price-container">
+                    <span class="regular-price">Rs. ${Number(product.regular_price).toLocaleString()}</span>
+                    <span class="sale-price">Rs. ${Number(product.sale_price).toLocaleString()}</span>
+                    <span class="discount">(${product.discount}% off)</span>
+                </div>`;
+
+                let caratInfo = product.carat ? `${product.carat} Carats` : '';
+                let frontImg = product.image || "placeholder.jpg";
+                let backImg = product.image2 || frontImg;
+                let imgWrapperId = `prodimgwrap_${category}_${idx}`;
+
+                let imagePath = `
+                <div class="product-image-wrapper" id="${imgWrapperId}">
+                    <img src="${frontImg}" alt="${product.title}" class="front-img" />
+                    <img src="${backImg}" alt="${product.title} back" class="back-img" />
+                </div>
+                <div class="product-dot-strip" id="dotstrip_${imgWrapperId}">
+                    <span class="slider-dot" data-dot="0"></span>
+                    <span class="slider-dot" data-dot="1"></span>
+                </div>`;
+
+                container.innerHTML += `
+                    <div class="product">
+                        <a href="productspecification.html?id=${product.id}" style="text-decoration:none; color:inherit;">
+                            ${imagePath}
+                            <h3>${product.title} - ${caratInfo}</h3>
+                        </a>
+                        ${priceContainer}
+                        <div class="product-actions">
+                            <button class="wishlist-btn" data-title="${product.id}" onclick="toggleWishlist(this, '${product.id}');event.stopPropagation();">
+                                <i class="${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart" style="${isInWishlist(product.id) ? 'color:red;' : ''}"></i>
+                            </button>
+                            <div class="buy-cart-actions">
+                                <button onclick="addToCart('${product.id}', ${product.sale_price}, ${product.carat});event.stopPropagation();">Add to Cart</button>
+                
+                                <button class="buy-now-btn" onclick="buyNow('${product.title}', ${product.sale_price}, ${product.carat});event.stopPropagation();">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                setTimeout(() => attachDotStripSlider(imgWrapperId), 0);
+            });
+        }
+
+        
+        // HOVER-ONLY IMAGE SWAP, NO AUTO-SLIDE
+        function attachDotStripSlider(wrapperId) {
+            const wrapper = document.getElementById(wrapperId);
+            const dotStrip = document.getElementById('dotstrip_' + wrapperId);
+            if (!wrapper || !dotStrip) return;
+            const imgs = [wrapper.querySelector('.front-img'), wrapper.querySelector('.back-img')];
+            const dots = dotStrip.querySelectorAll('.slider-dot');
+
+            // Initial state: front image visible, back image hidden
+            imgs[0].style.opacity = "1";
+            imgs[1].style.opacity = "0";
+            dots[0].classList.add('active');
+            dots[1].classList.remove('active');
+
+            // On hover: show back image
+            wrapper.onmouseenter = function() {
+                imgs[0].style.opacity = "0";
+                imgs[1].style.opacity = "1";
+                dots[0].classList.remove('active');
+                dots[1].classList.add('active');
+            };
+
+            // On mouse leave: show front image
+            wrapper.onmouseleave = function() {
+                imgs[0].style.opacity = "1";
+                imgs[1].style.opacity = "0";
+                dots[0].classList.add('active');
+                dots[1].classList.remove('active');
+            };
+
+            // Dots click: manual navigation (optional)
+            dots.forEach((dot, i) => {
+                dot.onclick = function(e) {
+                    e.stopPropagation();
+                    imgs.forEach((img, idx) => {
+                        img.style.opacity = (idx === i) ? "1" : "0";
+                        dots[idx].classList.toggle('active', idx === i);
+                    });
+                };
+            });
+        }
+
+        window.onload = function() {
+
+const hash = window.location.hash.substring(1) || 'natural-gemstones';
+
+loadCSVData(() => showCategory(hash));
+
+};
+
+
+
+// function addToCart(productName, price, carat) {
+
+// let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// cart.push({ name: productName, price: price, carat: carat });
+
+// localStorage.setItem('cart', JSON.stringify(cart));
+
+// alert(productName + " has been added to your cart!");
+
+// }
+
+// function addToCart(id, price, carat) {
+//     // id is a string, so match as string
+//     const product = products.find(p => String(p.id) === String(id));
+//     if (!product) {
+//         alert("Product not found!");
+//         return;
+//     }
+//     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+//     cart.push({
+//         id: product.id,
+//         name: product.title,
+//         price: product.sale_price,
+//         image: product.image,
+//         carat: product.carat
+//     });
+//     localStorage.setItem('cart', JSON.stringify(cart));
+//     alert("Added to cart!");
+// }
+
+function addToCart(id, price, carat) {
+    // BAD: If you use title to find product
+    // const product = products.find(p => p.title === id);
+
+    // GOOD: Use id to find product
+    const categoryKeys = Object.keys(productData);
+    let product = null;
+    for (const key of categoryKeys) {
+        product = productData[key].find(p => String(p.id) === String(id));
+        if (product) break;
+    }
+    if (!product) {
+        alert("Product not found!");
+        return;
+    }
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({
+        id: product.id,
+        name: product.title,
+        price: product.sale_price,
+        image: product.image,
+        carat: product.carat
+    });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert("Added to cart!");
+}
+
+
+
+
+
+// function buyNow(productName, price, carat) {
+
+// localStorage.setItem('buyNowProduct', JSON.stringify({ name: productName, price: price, carat: carat }));
+
+// window.location.href = "payment.html";
+
+// }
+
+function buyNow(productTitle, salePrice, carat) {
+    // Find the full product object by title (or use id if available)
+    let product = null;
+    for (const category in productData) {
+        product = productData[category].find(p => p.title === productTitle && p.carat == carat);
+        if (product) break;
+    }
+    if (!product) {
+        alert("Product not found!");
+        return;
+    }
+
+    // Prepare the buyNowProduct object with all necessary fields
+    const buyNowProduct = {
+        id: product.id,
+        title: product.title,
+        name: product.title, // for compatibility
+        carat: product.carat,
+        regular_price: product.regular_price,
+        sale_price: product.sale_price,
+        discount: product.discount,
+        image: product.image,
+        image2: product.image2,
+        category: product.category,
+        quantity: 1 // default to 1 for buy now
+    };
+
+    localStorage.setItem('buyNowProduct', JSON.stringify(buyNowProduct));
+    window.location.href = "payment.html";
+}
+
+
+
+function addToWishlist(productName) {
+
+let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+wishlist.push(productName);
+
+localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+alert(productName + " added to your wishlist!");
+
+}
+
+
+
+function openSearch() {
+
+let query = prompt("What are you searching for?");
+
+if (query) {
+
+    alert("Searching for: " + query);
+
+}
+
+}
+    </script>
+</body>
+</html>
