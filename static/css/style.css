@@ -37,7 +37,7 @@ body {
 } */
 
 .container {
-    width: 100vw; /* full viewport width */
+    width: 100%; /* full viewport width */
     /* height: 2px; */
     padding: 0px;
     margin: 0;
@@ -191,12 +191,19 @@ h2 {
   margin-top: 40px;
 }
 
-#home-image img {
+/* #home-image img { */
     
-    width: 103%;
+    /* width: 103%; */
     /* margin: 0 0 0 -70px; */
     /* margin: 0 0 0 0; */
 
+/* } */
+
+#home-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 
@@ -920,3 +927,92 @@ button:hover {
 
   .content{margin-left: 32px;
   }
+
+
+  @media (max-width: 768px) {
+    .header {
+      padding: 24px 0 12px 10px;
+    }
+    .menu {
+      flex-direction: column;
+      padding: 12px 10px;
+      gap: 10px;
+    }
+    .mainindex {
+      padding: 20px 5px 20px 5px;
+      font-size: 15px;
+    }
+    aside {
+      float: none;
+      width: 100%;
+      padding: 10px 0;
+    }
+    .content {
+      margin-left: 0;
+    }
+    .naginawala-footer-main {
+      padding: 32px 10px 18px 10px;
+    }
+  }
+  
+
+  @media (max-width: 768px) {
+    .product, .product-card {
+      width: 100% !important;
+      min-width: 0;
+      max-width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .product-card img, .product img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+    .product-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  
+
+  @media (max-width: 768px) {
+    .header {
+      padding: 24px 0 12px 10px;
+    }
+    .menu {
+      flex-direction: column;
+      padding: 12px 10px;
+      gap: 10px;
+    }
+    .mainindex {
+      padding: 20px 5px 20px 5px;
+      font-size: 15px;
+    }
+    aside {
+      float: none;
+      width: 100%;
+      padding: 10px 0;
+    }
+    .content {
+      margin-left: 0;
+    }
+    .naginawala-footer-main {
+      padding: 32px 10px 18px 10px;
+    }
+    .product, .product-card {
+      width: 100% !important;
+      min-width: 0;
+      max-width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .product-card img, .product img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+    .product-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  
