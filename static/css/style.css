@@ -1001,3 +1001,59 @@ Make tables scrollable on small screens */
   overflow-x: auto;
   padding: 10px;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .product-card, .product {
+    width: 90vw !important;
+    max-width: 95vw;
+    min-width: 0;
+    padding: 8px 4vw;
+    margin: 10px auto;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .product-card img, .product img {
+    width: 80vw;
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto 10px auto;
+    display: block;
+  }
+  .product-card h3, .product h3 {
+    font-size: 1.1em;
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+  .product-card p, .product p {
+    font-size: 0.95em;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .buy-cart-actions button {
+    padding: 4px 10px;
+    font-size: 0.85em;
+  }
+}
+
+/* @media (max-width: 480px) {
+  .product-card, .product {
+    width: 96vw !important;
+    max-width: 99vw;
+    padding: 4vw 2vw;
+    font-size: 13px;
+  }
+  .product-card img, .product img {
+    width: 70vw;
+    max-width: 120px;
+  }
+} */
+
