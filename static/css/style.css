@@ -515,11 +515,11 @@ footer a {
       padding: 12px 10px;
       gap: 10px;
   }
-  .menu-right {
+  /* .menu-right {
       flex-direction: column;
       gap: 10px;
       align-items: flex-start;
-  }
+  } */
   aside {
       float: none;
       width: 100%;
@@ -670,3 +670,28 @@ footer a {
   justify-content: flex-end;
   flex: 1;
 } */
+
+
+
+.menu-right {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive fix for mobile */
+@media (max-width: 768px) {
+  .menu-right {
+    flex-direction: row !important;
+    gap: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-right i {
+    font-size: 1.5em; /* or your preferred size */
+  }
+}
