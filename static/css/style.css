@@ -452,7 +452,7 @@ footer a {
 .naginawala-footer-newsletter-form {
   display: flex;
   margin-bottom: 14px;
-  margin-right: 14px;
+  margin-right: 200px;
   gap: 0;
 }
 .naginawala-footer-newsletter-form input[type="email"] {
@@ -516,7 +516,7 @@ footer a {
       padding: 24px 0 12px 10px;
   }
   .menu {
-      flex-direction: column;
+      flex-direction: row;
       padding: 12px 10px;
       gap: 10px;
   }
@@ -631,7 +631,7 @@ footer a {
   display: flex;
   gap: 30px;
   justify-content: center;
-  flex: 2;
+  flex: 1;
 }
 .menu-center a {
   position: relative;
@@ -956,7 +956,7 @@ footer a {
 } */
 
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: 1fr !important;
     gap: 15px;
@@ -977,7 +977,7 @@ footer a {
     height: auto;
     max-width: 100%;
   }
-}
+} */
 
 /* 
 Make tables scrollable on small screens */
@@ -1005,7 +1005,7 @@ Make tables scrollable on small screens */
 
 
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: 1fr !important;
     gap: 12px;
@@ -1043,50 +1043,13 @@ Make tables scrollable on small screens */
     font-size: 0.85em;
   }
 }
-
-
-@media (max-width: 768px) {
-  .product-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .product-card, .product {
-    width: 90vw !important;
-    max-width: 95vw;
-    min-width: 0;
-    padding: 0;
-    margin: 10px 30px 10px 30px;
-    box-sizing: border-box;
-    font-size: 14px;
-  }
-  .product-card img, .product img {
-    width: 80vw;
-    max-width: 180px;
-    height: auto;
-    margin: 0 auto 10px auto;
-    display: block;
-  }
-  .product-card h3, .product h3 {
-    font-size: 1.1em;
-    margin-top: 10px;
-    margin-bottom: 6px;
-  }
-  .product-card p, .product p {
-    font-size: 0.95em;
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
-  .buy-cart-actions button {
-    padding: 4px 10px;
-    font-size: 0.85em;
-  }
-}
+ */
 
 
 
-@media (max-width: 480px) {
+
+
+/* @media (max-width: 480px) {
   .product-card, .product {
     width: 96vw !important;
     max-width: 99vw;
@@ -1097,9 +1060,7 @@ Make tables scrollable on small screens */
     width: 70vw;
     max-width: 120px;
   }
-}
-
-
+} */
 
 
 
