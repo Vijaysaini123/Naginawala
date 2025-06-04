@@ -86,24 +86,31 @@ aside {
   width: 120px;
   padding: 30px 0 0 40px;
 }
-/* .mainindex {
+.mainindex {
   margin: 0;
-  padding: 35px 40px 30px 0;
+  /* padding: 35px 40px 30px 0; */
   color: #444;
   font-family: "Georgia";
   font-size: 13px;
   line-height: 18px;
   text-emphasis: justify;
-} */
-/* .mainindex a:hover {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+
+.mainindex a:hover {
   color: #444;
 }
 .mainindex p {
   margin-left: 30px;
   margin-top: 40px;
-} */
+}
 #home-image img {
-  width: 103%;
+  width: 100%;
   max-width: 103%;
   height: auto;
   display: block;
@@ -1024,7 +1031,7 @@ Make tables scrollable on small screens */
 }
 
 /* General fix for any content overflow */
-.spec-content, .product-specification, .product-details, .mainindex {
+.spec-content, .product-specification, .product-details{
   box-sizing: border-box;
   width: 100%;
   max-width: 100vw;
@@ -1032,6 +1039,13 @@ Make tables scrollable on small screens */
   padding: 10px;
 }
 
+/* .mainindex {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+  padding: 10px;
+} */
 
 
 
