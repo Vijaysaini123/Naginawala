@@ -1094,7 +1094,25 @@ Make tables scrollable on small screens */
 
 
 
+
 @media (max-width: 700px) {
+  .naginawala-footer-newsletter-form {
+    margin-right: 0;
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column; /* Optional: stack input and button vertically on very small screens */
+    gap: 8px;               /* Optional: adds space between input and button if stacked */
+  }
+  .naginawala-footer-newsletter-form input[type="email"],
+  .naginawala-footer-newsletter-form button {
+    border-radius: 4px;     /* Makes corners look nice if stacked */
+    width: 100%;
+    box-sizing: border-box;
+    margin-right: 0;        /* Remove button margin */
+  }
+}
+
+/* @media (max-width: 700px) {
   .naginawala-footer-newsletter-form {
     margin-right: 0;
     width: 100%;
@@ -1102,7 +1120,7 @@ Make tables scrollable on small screens */
   .naginawala-footer-newsletter-form button {
     margin-right: 0;
   }
-}
+} */
 
 
 
