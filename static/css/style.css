@@ -1094,7 +1094,15 @@ Make tables scrollable on small screens */
 
 
 
-
+@media (max-width: 700px) {
+  .naginawala-footer-newsletter-form {
+    margin-right: 0;
+    width: 100%;
+  }
+  .naginawala-footer-newsletter-form button {
+    margin-right: 0;
+  }
+}
 
 
 
