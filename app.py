@@ -11,7 +11,7 @@ import time
 
 app = Flask(__name__)
 
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         name = request.form['name']
@@ -44,9 +44,9 @@ user_history = {
     "9123456789": ["Order #1111", "Support Ticket #2222"]
 }
 
-# @app.route('/')
-# def index():
-#     return send_from_directory('.', 'login.html')
+@app.route('/')
+def index():
+    return send_from_directory('.', 'login.html')
 
 @app.route('/send_otp', methods=['POST'])
 def send_otp():
